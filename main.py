@@ -10,6 +10,11 @@ import yaml
 import wmi 
 import os
 import requests
+import ctypes
+
+
+myappid = 'tahiralauddin.tradingviewhotkeysapp.1.0' # arbitrary string
+ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
 
 load_dotenv()
 

@@ -386,7 +386,7 @@ p, li { white-space: pre-wrap; }
       </property>
       <property name="maximumSize">
        <size>
-        <width>400</width>
+        <width>0</width>
         <height>16777215</height>
        </size>
       </property>
@@ -481,8 +481,8 @@ border: none;
                 <property name="geometry">
                  <rect>
                   <x>0</x>
-                  <y>0</y>
-                  <width>297</width>
+                  <y>-233</y>
+                  <width>205</width>
                   <height>442</height>
                  </rect>
                 </property>
@@ -641,7 +641,7 @@ background-color: #2596be;
 }</string>
             </property>
             <property name="text">
-             <string>Update</string>
+             <string>Save</string>
             </property>
            </widget>
           </item>
