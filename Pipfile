@@ -1,0 +1,23 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+pyautogui = "*"
+pillow = "*"
+pywin32 = "*"
+psutil = "*"
+keyboard = "*"
+pyqt5 = "*"
+python-dotenv = "*"
+boto3 = "*"
+pyyaml = "*"
+wmi = "*"
+pynput = "*"
+pyinstaller = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.9"
