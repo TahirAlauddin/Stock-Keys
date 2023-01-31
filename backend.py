@@ -17,6 +17,7 @@ last_slashes_used_at = 0
 last_enters_used_at = 0
 slashes_count = 0
 enters_count = 0
+keys_pressed_till_now = []
 
 # Create a queue to transport data from one thread to another
 q = queue.Queue()
@@ -40,6 +41,7 @@ class TradingViewHotKeys:
         try:
             # Get key name
             key_char = key.name
+            keys_pressed_till_now.append(key_char)
 
             # Internal representation of decimal is '.'
             if key_char == 'decimal':
@@ -61,10 +63,9 @@ class TradingViewHotKeys:
             is_selected = APP_NAME in selected_app_name.lower()
 
             if key_char == OPEN_TRADINGVIEW_KEY:
-                if not self.is_process_running(APP_NAME):
-                    # Open Trading View App Or
-                    # Pull up Trading View app (if It is already running)
-                    self.open_tradingview_app()
+                # Open Trading View App Or
+                # Pull up Trading View app (if It is already running)
+                self.open_tradingview_app()
             else:
                 if is_selected:
                     # Use queue to outsource the handle hotkey job to other thread
@@ -82,7 +83,7 @@ class TradingViewHotKeys:
         if enters_count == 0:
             last_enters_used_at = now
             
-        if (now - last_enters_used_at) < 5:
+        if (now - last_enters_used_at) < 1:
             enters_count += 1
         else:
             enters_count = 0
@@ -91,8 +92,9 @@ class TradingViewHotKeys:
             # # Reset enters_count for next use
             enters_count = 0
 
+            # if not self.is_process_running(APP_NAME):
             os.startfile(APP_SHORTCUT_LINK)
-            self.bring_to_front(APP_NAME)
+            # self.bring_to_front(APP_NAME)
 
 
     def open_tradingview_app_from_start_menu(self):
@@ -156,11 +158,16 @@ class TradingViewHotKeys:
             key_char (str): The character corresponding to the hotkey pressed.
         """
         key_char = key.name
+        # Internal representation of decimal is '.'
+        if key_char == 'decimal':
+            key_char = '.'
+
         search_query = HOT_KEYS_MAPPING[key_char]
+
         if key_char == SQUARE_HOTKEY:
             # To draw squre, we'll handle it differently
             self.draw_square(search_query)
-        elif key_char in KEYS_THAT_ALREADY_HAVE_HOTKEYS:
+        elif key_char in KEYS_THAT_ALREADY_HAVE_HOTKEYS.values():
             # Corresponding functionlity of the key already have a hotkey associated with in the app
             self.press_hotkey_in_app(key_char)
         elif key_char in KEYS_FOR_QUICK_SEARCH:
@@ -169,6 +176,8 @@ class TradingViewHotKeys:
         elif key_char in KEYS_FOR_TIME_INTERVAL:
             # Key corresponds to changing Time Interval, Use ',' key to achieve this task
             self.select_time_interval(key_char)
+        elif key_char in KEYS_FOR_PIXEL_LOCATION:
+            self.locate_pixels_on_screen(key_char)
 
 
     def draw_square(self, search_query):
@@ -195,11 +204,13 @@ class TradingViewHotKeys:
             # if that is the case, then don't draw square anymore
             # It is possible that within the sleep of 0.2 seconds or something
             # Another '/' was pressed, then it can cause problem
+            time.sleep(WAIT_VALUE)
             if slashes_count == 0:
                 keyboard.press('shift')
                 pyautogui.drag(SIZE_OF_SQUARE, SIZE_OF_SQUARE)
                 pyautogui.click()
                 keyboard.release('shift')
+                
 
             
     def do_a_search_on_quick_search(self, search_query):
@@ -212,19 +223,24 @@ class TradingViewHotKeys:
             search_query (str): The query which will be searched in quick search option.
         """
         # Press escape to close Symbol Search or any other popup
-        pyautogui.press('escape')
-        keyboard.press_and_release('ctrl+k')
-        keyboard.write(search_query)
-        pyautogui.press('down')
-        # Pressing enter 2 times to make sure the enter is being pressed, 
-        # even if it misses for the first time, it will work 2nd time
-        time.sleep(WAIT_VALUE)
-        pyautogui.press('enter')
-        # Wait a little more and press enter again, if the requested
-        # function was Auot (Fits Data to Screen)
-        if search_query == HOT_KEYS_MAPPING[AUTO_FIT_HOTKEY]:
-            time.sleep(0.1)
-            pyautogui.press('enter')
+        keyboard.press_and_release('esc')
+        pyautogui.keyDown('ctrl')
+        pyautogui.press('k')
+        pyautogui.keyUp('ctrl')
+        while True:
+            if keys_pressed_till_now[-1] == 'left ctrl':
+                break
+        pyautogui.write(search_query)
+
+        pyautogui.keyDown('down')
+        pyautogui.keyUp('down')
+
+        while True:
+            if keys_pressed_till_now[-1] == 'down':
+                break
+        
+        pyautogui.keyDown('enter')
+        pyautogui.keyUp('enter')
 
 
     def select_time_interval(self, key_char):
@@ -240,7 +256,35 @@ class TradingViewHotKeys:
         keyboard.write(HOT_KEYS_MAPPING[key_char])
         pyautogui.press('enter')
 
+    def press_hotkey_in_app(self, key_char):
+        pyautogui.press('escape')            
+        hotkey = HOT_KEYS_MAPPING_METHOD2[key_char]
+        keyboard.press_and_release(hotkey)
 
+    def find_window_for_pid(self, pid):
+        result = None
+        def callback(hwnd, _):
+            nonlocal result
+            ctid, cpid = win32process.GetWindowThreadProcessId(hwnd)
+            if cpid == pid:
+                result = hwnd
+                return False
+            return True
+        try:
+            win32gui.EnumWindows(callback, None)
+        except:
+            return None
+        return result
+        
+    def bring_to_front(self, process_name):
+        for proc in psutil.process_iter():
+            if process_name in proc.name().lower():
+                print(proc.pid)
+                hwnd = self.find_window_for_pid(proc.pid)
+                if hwnd:
+                    ctypes.windll.user32.SetForegroundWindow(hwnd)
+                break
+            
     def locate_center_of_screen(self):
         """Locate the center of the screen"""
         width = GetSystemMetrics(0)
@@ -249,16 +293,29 @@ class TradingViewHotKeys:
         center_of_height = height / 2
         return center_of_width, center_of_height
 
-    def press_hotkey_in_app(self, key_char):
-        pyautogui.press('escape')            
-        hotkey = HOT_KEYS_MAPPING_METHOD2[key_char]
-        keyboard.press_and_release(hotkey)
+
+    def locate_pixels_on_screen(self, key_char):
+
+        image = r'images/screenshots/remove-all-drawings.png'
+        image2 = r'images/screenshots/remove-all-drawings2.png'
+
+        # Escape the symbol search
+        pyautogui.press('escape')
+        # Escape the selection of drawing
+        pyautogui.press('escape')
         
-    def bring_to_front(self, process_name):
-        for proc in psutil.process_iter():
-            if proc.name() == process_name:
-                ctypes.windll.user32.SetForegroundWindow(proc.winfo.hwnd)
-                break
+        box = pyautogui.locateOnScreen(
+            image, grayscale=True
+        ) or pyautogui.locateOnScreen(
+            image2, grayscale=True
+        )
+
+        if box:
+            x, y = (box.left + box.width//2), (box.top + box.height//2)
+
+            pyautogui.click(x, y)
+            pyautogui.click(x+50, y)
+
 
     def run(self):
         """
@@ -266,7 +323,7 @@ class TradingViewHotKeys:
         when a key is pressed. Outsource the task to other thread using queue
         """
 
-        keyboard.on_press(self.handle_incoming_keys)
+        keyboard.on_release(self.handle_incoming_keys)
 
         # Do other stuff here
         while True:

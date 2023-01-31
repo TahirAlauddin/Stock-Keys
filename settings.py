@@ -14,6 +14,8 @@ QUICK_SEARCH_BUTTON = config['quick_search_button']
 TIME_INTERVAL_BUTTON = config['time_interval_button']
 KEYS_FOR_QUICK_SEARCH =  config['keys_for_quick_search']
 KEYS_FOR_TIME_INTERVAL = config['keys_for_time_interval']
+KEYS_FOR_PIXEL_LOCATION = config['keys_for_pixel_location']
+
 NUMPAD_KEYS_SCANCODE = config['numpad_keys_scancode']
 SIZE_OF_SQUARE = config['size_of_square']
 KEYS_THAT_ALREADY_HAVE_HOTKEYS: dict = config['keys_that_already_have_hotkeys']
@@ -21,7 +23,6 @@ KEYS_THAT_ALREADY_HAVE_HOTKEYS: dict = config['keys_that_already_have_hotkeys']
 # Special cases Key
 OPEN_TRADINGVIEW_KEY = config['open_tradingview_key']
 SQUARE_HOTKEY = config['square_hotkey']
-AUTO_FIT_HOTKEY = config['auto_fit_hotkey']
 
 
 # Mappings of keys to their respective functions
@@ -37,7 +38,7 @@ HOT_KEYS_MAPPING = {
     '9': '1W',                      # 1 Week Chart
     '0': 'Trend',                   # Trend line, has alternative hotkey 
     'enter': 'Open',                # Open up the TradingView App
-    '+': 'Auto (Fits',              # AutoFitting Chart
+    '+': 'Remove Drawings',         # Delete Drawings
     '-': 'Hide',                    # Hide all drawings, has alternative hotkey
     '*': 'Fib R',                   # Fib, has alternative hotkey
     '/': 'Rectangle',               # ctrl+k -> type Rectangle -> Click on Rectangle -> Keep pressing Shift

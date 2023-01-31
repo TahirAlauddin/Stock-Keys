@@ -1,9 +1,9 @@
 app_name: tradingview
-app_shortcut_link: C:\Users\LENOVO\OneDrive\Desktop\TradingView.lnk
+app_shortcut_link: ''
 application:
   name: TradingView HotKeys Desktop App
   version: 1.0
-auto_fit_hotkey: +
+# auto_fit_hotkey: +
 debug: true
 hotkeys_mapping_method2:
   '*': Alt+f
@@ -12,7 +12,6 @@ hotkeys_mapping_method2:
   '0': Alt+t
 keys_for_quick_search:
 - '1'
-- +
 - /
 keys_for_time_interval:
 - '2'

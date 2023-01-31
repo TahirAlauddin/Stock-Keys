@@ -1,5 +1,19 @@
+# Cache
 __pycache__/
 *.pyc
-_backend.py
-Roboto
+
+# Extensions
 .env
+*.exe
+*.zip
+*.spec
+
+# Folders
+Roboto
+build/
+dist/
+_SourceCode
+
+# Specific files
+_backend.py
+test.py

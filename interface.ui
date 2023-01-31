@@ -11,11 +11,11 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Hotkey TradingView</string>
+   <string>Stock Keys</string>
   </property>
   <property name="windowIcon">
    <iconset resource="resources.qrc">
-    <normaloff>:/icons/images/icons/icons8-hp-64.png</normaloff>:/icons/images/icons/icons8-hp-64.png</iconset>
+    <normaloff>:/icons/images/icons/Trans Logo.png</normaloff>:/icons/images/icons/Trans Logo.png</iconset>
   </property>
   <widget class="QWidget" name="centralwidget">
    <property name="styleSheet">
@@ -481,7 +481,7 @@ border: none;
                 <property name="geometry">
                  <rect>
                   <x>0</x>
-                  <y>-233</y>
+                  <y>0</y>
                   <width>205</width>
                   <height>442</height>
                  </rect>
@@ -799,7 +799,7 @@ background-color: #2596be;
          </property>
          <property name="icon">
           <iconset resource="resources.qrc">
-           <normaloff>:/icons/images/icons/icons8-hp-64.png</normaloff>:/icons/images/icons/icons8-hp-64.png</iconset>
+           <normaloff>:/icons/images/icons/Trans Logo.png</normaloff>:/icons/images/icons/Trans Logo.png</iconset>
          </property>
          <property name="iconSize">
           <size>
@@ -811,8 +811,11 @@ background-color: #2596be;
        </item>
        <item>
         <widget class="QLabel" name="softwareNameLabel">
+         <property name="styleSheet">
+          <string notr="true">font: 18pt &quot;MV Boli&quot;;</string>
+         </property>
          <property name="text">
-          <string>thinkorswim</string>
+          <string>stock keys</string>
          </property>
         </widget>
        </item>

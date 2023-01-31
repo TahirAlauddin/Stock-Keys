@@ -1,7 +1,7 @@
 <RCC>
   <qresource prefix="icons">
-    <file>images/icons/icons8-hp-64.png</file>
     <file>images/icons/icons8-question-mark-32.png</file>
+    <file>images/icons/Trans Logo.png</file>
     <file>images/icons/icons8-question-mark-48.png</file>
     <file>images/icons/icons8-settings-50.png</file>
   </qresource>

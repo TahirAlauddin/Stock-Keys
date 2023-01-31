@@ -16,7 +16,7 @@ class Ui_MainWindow(object):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(700, 486)
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(":/icons/images/icons/icons8-hp-64.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap(":/icons/images/icons/Trans Logo.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         MainWindow.setWindowIcon(icon)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setStyleSheet("QWidget {\n"
@@ -238,7 +238,7 @@ class Ui_MainWindow(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollArea.setObjectName("scrollArea")
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, -233, 205, 442))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 205, 442))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
         self.gridLayout = QtWidgets.QGridLayout(self.scrollAreaWidgetContents)
         self.gridLayout.setHorizontalSpacing(6)
@@ -398,6 +398,7 @@ class Ui_MainWindow(object):
         self.logo.setObjectName("logo")
         self.horizontalLayout.addWidget(self.logo)
         self.softwareNameLabel = QtWidgets.QLabel(self.titleFrame)
+        self.softwareNameLabel.setStyleSheet("font: 18pt \"MV Boli\";")
         self.softwareNameLabel.setObjectName("softwareNameLabel")
         self.horizontalLayout.addWidget(self.softwareNameLabel)
         spacerItem2 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
@@ -415,7 +416,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "Hotkey TradingView"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "Stock Keys"))
         self.helpText.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
@@ -514,5 +515,5 @@ class Ui_MainWindow(object):
         self.updateButton.setText(_translate("MainWindow", "Save"))
         self.resetButton.setText(_translate("MainWindow", "Reset Settings"))
         self.loginButton.setText(_translate("MainWindow", "Log In"))
-        self.softwareNameLabel.setText(_translate("MainWindow", "thinkorswim"))
+        self.softwareNameLabel.setText(_translate("MainWindow", "stock keys"))
 from . import resources_rc
