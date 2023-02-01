@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="icons">
+    <file>images/icons/logo_stock_keys.png</file>
     <file>images/icons/icons8-question-mark-32.png</file>
     <file>images/icons/Trans Logo.png</file>
     <file>images/icons/icons8-question-mark-48.png</file>

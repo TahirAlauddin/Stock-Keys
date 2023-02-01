@@ -184,33 +184,16 @@ class TradingViewHotKeys:
         global last_slashes_used_at, slashes_count
 
         now = time.time()
+
+        # Search rectangle in quick-search
+        self.do_a_search_on_quick_search(search_query)
+        time.sleep(WAIT_VALUE)
+        
         if slashes_count == 0:
-            last_slashes_used_at = now
-            
-        if (now - last_slashes_used_at) < 2:
-            slashes_count += 1
-        else:
-            slashes_count = 0
-
-        if slashes_count == 3:
-            slashes_count = 0
-            # Search rectangle in quick-search
-            self.do_a_search_on_quick_search(search_query)
-            # Keep pressing shift
-
-            # If slashes_count is somehow not 0,
-            # It means the '/' was pressed 4 times or more 
-            # in 2 seconds consecutively. 
-            # if that is the case, then don't draw square anymore
-            # It is possible that within the sleep of 0.2 seconds or something
-            # Another '/' was pressed, then it can cause problem
-            time.sleep(WAIT_VALUE)
-            if slashes_count == 0:
-                keyboard.press('shift')
-                pyautogui.drag(SIZE_OF_SQUARE, SIZE_OF_SQUARE)
-                pyautogui.click()
-                keyboard.release('shift')
-                
+            keyboard.press('shift')
+            pyautogui.drag(SIZE_OF_SQUARE, SIZE_OF_SQUARE)
+            pyautogui.click()
+            keyboard.release('shift')       
 
             
     def do_a_search_on_quick_search(self, search_query):
@@ -228,8 +211,10 @@ class TradingViewHotKeys:
         pyautogui.press('k')
         pyautogui.keyUp('ctrl')
         while True:
+            #! May cause error in different machine
             if keys_pressed_till_now[-1] == 'left ctrl':
                 break
+            
         pyautogui.write(search_query)
 
         pyautogui.keyDown('down')
@@ -239,6 +224,7 @@ class TradingViewHotKeys:
             if keys_pressed_till_now[-1] == 'down':
                 break
         
+        time.sleep(WAIT_VALUE)
         pyautogui.keyDown('enter')
         pyautogui.keyUp('enter')
 

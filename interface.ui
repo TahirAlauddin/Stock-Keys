@@ -15,7 +15,7 @@
   </property>
   <property name="windowIcon">
    <iconset resource="resources.qrc">
-    <normaloff>:/icons/images/icons/Trans Logo.png</normaloff>:/icons/images/icons/Trans Logo.png</iconset>
+    <normaloff>:/icons/images/icons/logo_stock_keys.png</normaloff>:/icons/images/icons/logo_stock_keys.png</iconset>
   </property>
   <widget class="QWidget" name="centralwidget">
    <property name="styleSheet">
@@ -366,6 +366,25 @@ p, li { white-space: pre-wrap; }
           </size>
          </property>
         </spacer>
+       </item>
+       <item alignment="Qt::AlignHCenter">
+        <widget class="QPushButton" name="hideGUIButton">
+         <property name="styleSheet">
+          <string notr="true">#hideGUIButton {
+background-color: rgb(17, 214, 96);
+padding: 10px;
+border: 2px solid rgb(17, 214, 96);
+font: 14pt &quot;Roboto&quot;;
+}
+
+#hideGUIButton:pressed {
+background-color: rgb(27, 194, 86);
+}</string>
+         </property>
+         <property name="text">
+          <string>Hide In Background</string>
+         </property>
+        </widget>
        </item>
       </layout>
      </widget>
@@ -738,7 +757,25 @@ background-color: #2596be;
 }</string>
          </property>
          <property name="text">
-          <string>Log In</string>
+          <string>Start</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="stopButton">
+         <property name="styleSheet">
+          <string notr="true">#stopButton {
+background-color: rgb(231, 18, 46);
+padding: 5px;
+border: 2px solid rgb(231, 18, 46);
+}
+
+#stopButton:pressed {
+background-color: rgb(255, 37, 40);
+}</string>
+         </property>
+         <property name="text">
+          <string>Stop</string>
          </property>
         </widget>
        </item>
@@ -794,17 +831,20 @@ background-color: #2596be;
        </property>
        <item>
         <widget class="QPushButton" name="logo">
+         <property name="styleSheet">
+          <string notr="true">padding: 0px;</string>
+         </property>
          <property name="text">
           <string/>
          </property>
          <property name="icon">
           <iconset resource="resources.qrc">
-           <normaloff>:/icons/images/icons/Trans Logo.png</normaloff>:/icons/images/icons/Trans Logo.png</iconset>
+           <normaloff>:/icons/images/icons/logo_stock_keys.png</normaloff>:/icons/images/icons/logo_stock_keys.png</iconset>
          </property>
          <property name="iconSize">
           <size>
-           <width>30</width>
-           <height>30</height>
+           <width>50</width>
+           <height>50</height>
           </size>
          </property>
         </widget>
@@ -812,10 +852,10 @@ background-color: #2596be;
        <item>
         <widget class="QLabel" name="softwareNameLabel">
          <property name="styleSheet">
-          <string notr="true">font: 18pt &quot;MV Boli&quot;;</string>
+          <string notr="true"/>
          </property>
          <property name="text">
-          <string>stock keys</string>
+          <string>Stock Keys</string>
          </property>
         </widget>
        </item>

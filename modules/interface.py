@@ -16,7 +16,7 @@ class Ui_MainWindow(object):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(700, 486)
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(":/icons/images/icons/Trans Logo.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap(":/icons/images/icons/logo_stock_keys.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         MainWindow.setWindowIcon(icon)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setStyleSheet("QWidget {\n"
@@ -190,6 +190,19 @@ class Ui_MainWindow(object):
         self.verticalLayout_2.addWidget(self.statusLabel, 0, QtCore.Qt.AlignHCenter)
         spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         self.verticalLayout_2.addItem(spacerItem)
+        self.hideGUIButton = QtWidgets.QPushButton(self.contentFrame)
+        self.hideGUIButton.setStyleSheet("#hideGUIButton {\n"
+"background-color: rgb(17, 214, 96);\n"
+"padding: 10px;\n"
+"border: 2px solid rgb(17, 214, 96);\n"
+"font: 14pt \"Roboto\";\n"
+"}\n"
+"\n"
+"#hideGUIButton:pressed {\n"
+"background-color: rgb(27, 194, 86);\n"
+"}")
+        self.hideGUIButton.setObjectName("hideGUIButton")
+        self.verticalLayout_2.addWidget(self.hideGUIButton, 0, QtCore.Qt.AlignHCenter)
         self.gridLayout_2.addWidget(self.contentFrame, 1, 1, 1, 1)
         self.extraRightBox = QtWidgets.QFrame(self.centralwidget)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Preferred)
@@ -372,6 +385,18 @@ class Ui_MainWindow(object):
 "}")
         self.loginButton.setObjectName("loginButton")
         self.horizontalLayout_2.addWidget(self.loginButton)
+        self.stopButton = QtWidgets.QPushButton(self.optionsFrame)
+        self.stopButton.setStyleSheet("#stopButton {\n"
+"background-color: rgb(231, 18, 46);\n"
+"padding: 5px;\n"
+"border: 2px solid rgb(231, 18, 46);\n"
+"}\n"
+"\n"
+"#stopButton:pressed {\n"
+"background-color: rgb(255, 37, 40);\n"
+"}")
+        self.stopButton.setObjectName("stopButton")
+        self.horizontalLayout_2.addWidget(self.stopButton)
         self.settingsButton = QtWidgets.QPushButton(self.optionsFrame)
         self.settingsButton.setStyleSheet("")
         self.settingsButton.setText("")
@@ -392,13 +417,14 @@ class Ui_MainWindow(object):
         self.horizontalLayout.setSpacing(0)
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.logo = QtWidgets.QPushButton(self.titleFrame)
+        self.logo.setStyleSheet("padding: 0px;")
         self.logo.setText("")
         self.logo.setIcon(icon)
-        self.logo.setIconSize(QtCore.QSize(30, 30))
+        self.logo.setIconSize(QtCore.QSize(50, 50))
         self.logo.setObjectName("logo")
         self.horizontalLayout.addWidget(self.logo)
         self.softwareNameLabel = QtWidgets.QLabel(self.titleFrame)
-        self.softwareNameLabel.setStyleSheet("font: 18pt \"MV Boli\";")
+        self.softwareNameLabel.setStyleSheet("")
         self.softwareNameLabel.setObjectName("softwareNameLabel")
         self.horizontalLayout.addWidget(self.softwareNameLabel)
         spacerItem2 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
@@ -498,6 +524,7 @@ class Ui_MainWindow(object):
 "<td style=\" vertical-align:bottom; padding-left:3; padding-right:3; padding-top:2; padding-bottom:2;\">\n"
 "<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Arial\'; font-size:10pt;\">Square</span></p></td></tr></table></body></html>"))
         self.label_2.setText(_translate("MainWindow", "LICENSE KEY"))
+        self.hideGUIButton.setText(_translate("MainWindow", "Hide In Background"))
         self.settingsLabel.setText(_translate("MainWindow", "Settings"))
         self.fibHotKeyInput.setText(_translate("MainWindow", "Alt+F"))
         self.hideDrawingsHotKeyInput.setText(_translate("MainWindow", "Ctrl+Alt+H"))
@@ -514,6 +541,7 @@ class Ui_MainWindow(object):
         self.label_9.setText(_translate("MainWindow", "App Path"))
         self.updateButton.setText(_translate("MainWindow", "Save"))
         self.resetButton.setText(_translate("MainWindow", "Reset Settings"))
-        self.loginButton.setText(_translate("MainWindow", "Log In"))
-        self.softwareNameLabel.setText(_translate("MainWindow", "stock keys"))
+        self.loginButton.setText(_translate("MainWindow", "Start"))
+        self.stopButton.setText(_translate("MainWindow", "Stop"))
+        self.softwareNameLabel.setText(_translate("MainWindow", "Stock Keys"))
 from . import resources_rc

@@ -27,7 +27,7 @@ SQUARE_HOTKEY = config['square_hotkey']
 
 # Mappings of keys to their respective functions
 HOT_KEYS_MAPPING = {
-    '1': 'Dot',                     # Pointer/Dot
+    '1': 'Rectangle',               # ctrl+k -> type Rectangle -> Click on Rectangle -> Keep pressing Shift
     '2': '1D',                      # 1 Day Chart
     '3': '5',                       # 5 Minute Chart
     '4': '1',                       # 1 Minute Chart
@@ -41,7 +41,6 @@ HOT_KEYS_MAPPING = {
     '+': 'Remove Drawings',         # Delete Drawings
     '-': 'Hide',                    # Hide all drawings, has alternative hotkey
     '*': 'Fib R',                   # Fib, has alternative hotkey
-    '/': 'Rectangle',               # ctrl+k -> type Rectangle -> Click on Rectangle -> Keep pressing Shift
     '.': 'Horiz'                    # Draw Horizontal Line, has alternative hotkey
 }
 

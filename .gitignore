@@ -7,12 +7,16 @@ __pycache__/
 *.exe
 *.zip
 *.spec
+*.rar
+*.aip
 
 # Folders
 Roboto
 build/
 dist/
 _SourceCode
+Stock Keys-SetupFiles/
+Stock Keys-cache/
 
 # Specific files
 _backend.py

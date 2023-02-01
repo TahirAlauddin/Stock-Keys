@@ -13,7 +13,7 @@ import requests
 import ctypes
 
 
-myappid = 'tahiralauddin.tradingviewhotkeysapp.1.0' # arbitrary string
+myappid = 'tahiralauddin.tradingviewhotkeysapp.1.1' # arbitrary string
 ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
 
 load_dotenv()
@@ -32,6 +32,7 @@ class MainWindow(QMainWindow):
         # SET AS GLOBAL WIDGETS
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
+        self.keys_bg_process = None
 
         # APP NAME
         title = "TradingView HotKeys Desktop App"
@@ -54,6 +55,8 @@ class MainWindow(QMainWindow):
         self.ui.settingsButton.clicked.connect(openCloseRightBox)
         self.ui.helpButton.clicked.connect(openCloseLeftBox)
         self.ui.loginButton.clicked.connect(self.login)
+        self.ui.stopButton.clicked.connect(self.stop)
+        self.ui.hideGUIButton.clicked.connect(self.hide_gui)
         self.ui.updateButton.clicked.connect(self.update_settings)
         self.ui.resetButton.clicked.connect(self.reset_settings)
 
@@ -73,6 +76,35 @@ class MainWindow(QMainWindow):
         except requests.exceptions.ConnectionError:
             return False
 
+    def get_license_key_from_config(self):
+        """If the license key is already validated for this machine"""
+        with open('config.yml') as config_file:
+            config = yaml.safe_load(config_file)
+
+        if config['license_key']:
+            return True
+
+    def set_license_key_in_config(self, license_key):
+        """If the license key is already validated for this machine"""
+        with open('config.yml') as config_file:
+            config = yaml.safe_load(config_file)
+
+        config['license_key'] = license_key
+
+        with open('config.yml', 'w') as config_file:
+            yaml.dump(config, config_file)
+
+
+    def hide_gui(self):
+        """Stop the hotkeys listener process from the background"""
+        self.hide()
+
+
+    def stop(self):
+        """Stop the hotkeys listener process from the background"""
+        self.keys_bg_process.stop()
+        self.ui.statusLabel.setText("The background process stopped!")
+
 
     def login(self):
         """
@@ -80,27 +112,29 @@ class MainWindow(QMainWindow):
         start a background process for the TradingViewHotKeysBackgroundProcess.
         If the license key is not valid, display an error message on the UI.
         """
-        license_key = self.ui.licenseInput.text()
+        valid_license = False
+        if self.get_license_key_from_config():
+            valid_license = True
+        else:
+            license_key = self.ui.licenseInput.text()
+            # Make sure internet is connected, otherwise cannot work with AWS Dynamodb
+            if not self.is_internet_connected():
+                QMessageBox.information(self, "Important Note", 
+                                        "Internet is not connected. Cannot lookup for the license key online!")
+                return 
 
-        # Make sure internet is connected, otherwise cannot work with AWS Dynamodb
-        if not self.is_internet_connected():
-            QMessageBox.information(self, "Important Note", 
-                                    "Internet is not connected. Cannot lookup for the license key online!")
-            return 
-
-        try:
-            valid_license = self.license_key_is_valid(license_key)
-        except Exception as e:
-            # Generate Logs for erros
-            #TODO
-            QMessageBox.critical(self, "Critical Error", str(e))
-            valid_license = False
+            try:
+                valid_license = self.license_key_is_valid(license_key)
+                self.set_license_key_in_config(license_key)
+            except Exception as e:
+                # Generate Logs for erros
+                QMessageBox.critical(self, "Critical Error", str(e))
 
         if valid_license:
             # Use a different thread, background 
-            runnable = TradingViewHotKeysBackgroundProcess()
-            runnable.daemon = True
-            runnable.start()
+            self.keys_bg_process = TradingViewHotKeysBackgroundProcess()
+            self.keys_bg_process.daemon = True
+            self.keys_bg_process.start()
             self.ui.statusLabel.setText("Program has started running in background!")
         else:
             self.ui.statusLabel.setText("Invalid License Key!")
