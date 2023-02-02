@@ -1,19 +1,19 @@
 app_name: tradingview
-app_shortcut_link: C:\Users\LENOVO\OneDrive\Desktop\TradingView.lnk
+app_shortcut_link: TradingView.lnk
 application:
-  name: TradingView HotKeys Desktop App
-  version: 1.0
+  name: Stock Keys
+  version: 1.6
+backspace_remove_drawing_key: backspace
 debug: true
 hotkeys_mapping_method2:
   '*': Alt+f
   '-': Ctrl+Alt+h
   .: Alt+h
   '0': Alt+t
-keys_for_pixel_location:
-- +
 keys_for_quick_search:
-- /
+- '1'
 - +
+- '-'
 keys_for_time_interval:
 - '2'
 - '3'
@@ -28,9 +28,10 @@ keys_that_already_have_hotkeys:
   Hide: '-'
   Horizontal Line: .
   Trend Line: '0'
-license_key: '1234567'
+license_key: ''
 log_level: info
 numpad_keys_scancode:
+- 14
 - 28
 - 53
 - 55
@@ -50,6 +51,6 @@ numpad_keys_scancode:
 open_tradingview_key: enter
 quick_search_button: Ctrl+K
 size_of_square: 100
-square_hotkey: '1'
+square_hotkey: '-'
 time_interval_button: ','
 wait_value: 0.5

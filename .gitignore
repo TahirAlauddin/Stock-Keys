@@ -3,6 +3,7 @@ __pycache__/
 *.pyc
 
 # Extensions
+_.env
 .env
 *.exe
 *.zip

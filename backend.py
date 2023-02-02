@@ -11,13 +11,17 @@ from win32api import GetSystemMetrics
 from settings import *
 import os
 import ctypes
+import sys
 
 # GLOBAL VALUES
 last_slashes_used_at = 0
 last_enters_used_at = 0
+last_backspace_used_at = 0
 slashes_count = 0
 enters_count = 0
+backspaces_count = 0
 keys_pressed_till_now = []
+terminate = False
 
 # Create a queue to transport data from one thread to another
 q = queue.Queue()
@@ -95,6 +99,26 @@ class TradingViewHotKeys:
             # if not self.is_process_running(APP_NAME):
             os.startfile(APP_SHORTCUT_LINK)
             # self.bring_to_front(APP_NAME)
+
+
+    def remove_drawings(self, key_char):
+        global last_backspace_used_at, backspaces_count
+        now = time.time()
+        if backspaces_count == 0:
+            last_backspace_used_at = now
+            
+        if (now - last_backspace_used_at) < 1:
+            backspaces_count += 1
+        else:
+            backspaces_count = 0
+
+        if backspaces_count == 2:
+            # # Reset backspaces_count for next use
+            backspaces_count = 0
+
+            search_query = HOT_KEYS_MAPPING[key_char]
+            self.do_a_search_on_quick_search(search_query)
+
 
 
     def open_tradingview_app_from_start_menu(self):
@@ -179,21 +203,45 @@ class TradingViewHotKeys:
         elif key_char in KEYS_FOR_PIXEL_LOCATION:
             self.locate_pixels_on_screen(key_char)
 
+        elif key_char == BACKSPACE_REMOVE_DRAWING_KEY:
+            self.remove_drawings(key_char)
+
+        elif key_char == AUTOFIT_KEY:
+            self.auto_fit(key_char)
+
+
+
+    def auto_fit(self, key_char):
+        global last_slashes_used_at, slashes_count
+        now = time.time()
+        if slashes_count == 0:
+            last_slashes_used_at = now
+            
+        if (now - last_slashes_used_at) < 1:
+            slashes_count += 1
+        else:
+            slashes_count = 0
+
+        if slashes_count == 2:
+            # # Reset slashes_count for next use
+            slashes_count = 0
+
+            search_query = HOT_KEYS_MAPPING[key_char]
+            self.do_a_search_on_quick_search(search_query)
+
+
 
     def draw_square(self, search_query):
-        global last_slashes_used_at, slashes_count
-
         now = time.time()
 
         # Search rectangle in quick-search
         self.do_a_search_on_quick_search(search_query)
         time.sleep(WAIT_VALUE)
         
-        if slashes_count == 0:
-            keyboard.press('shift')
-            pyautogui.drag(SIZE_OF_SQUARE, SIZE_OF_SQUARE)
-            pyautogui.click()
-            keyboard.release('shift')       
+        keyboard.press('shift')
+        pyautogui.drag(SIZE_OF_SQUARE, SIZE_OF_SQUARE)
+        pyautogui.click()
+        keyboard.release('shift')
 
             
     def do_a_search_on_quick_search(self, search_query):
@@ -210,20 +258,13 @@ class TradingViewHotKeys:
         pyautogui.keyDown('ctrl')
         pyautogui.press('k')
         pyautogui.keyUp('ctrl')
-        while True:
-            #! May cause error in different machine
-            if keys_pressed_till_now[-1] == 'left ctrl':
-                break
             
+        time.sleep(WAIT_VALUE)
         pyautogui.write(search_query)
 
         pyautogui.keyDown('down')
         pyautogui.keyUp('down')
 
-        while True:
-            if keys_pressed_till_now[-1] == 'down':
-                break
-        
         time.sleep(WAIT_VALUE)
         pyautogui.keyDown('enter')
         pyautogui.keyUp('enter')
@@ -308,14 +349,18 @@ class TradingViewHotKeys:
         Start the keyboard event listener that handles incoming keys
         when a key is pressed. Outsource the task to other thread using queue
         """
-
+        print("RUN")
         keyboard.on_release(self.handle_incoming_keys)
 
         # Do other stuff here
         while True:
             if not q.empty():
                 key = q.get()
-                self.handle_hotkey(key)        
+                self.handle_hotkey(key)
+                
+            if terminate == True:
+                print("Exiting")
+                break      
 
 
 class TradingViewHotKeysBackgroundProcess(threading.Thread):
@@ -325,6 +370,8 @@ class TradingViewHotKeysBackgroundProcess(threading.Thread):
 
     def run(self):
         # function to run in another thread
+        global terminate
+        terminate = False
         print("Running in another thread")
         self._stop_event = threading.Event()
         try:
@@ -338,6 +385,10 @@ class TradingViewHotKeysBackgroundProcess(threading.Thread):
 
     def stopped(self):
         return self._stop_event.is_set()
+
+    def terminate(self):
+        global terminate
+        terminate = True
 
 
 def main():        

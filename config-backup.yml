@@ -1,8 +1,8 @@
 app_name: tradingview
-app_shortcut_link: ''
+app_shortcut_link: TradingView.lnk
 application:
-  name: TradingView HotKeys Desktop App
-  version: 1.1
+  name: Stock Keys
+  version: 1.6
 
 debug: true
 hotkeys_mapping_method2:
@@ -11,8 +11,9 @@ hotkeys_mapping_method2:
   .: Alt+h
   '0': Alt+t
 keys_for_quick_search:
-- /
+- '1'
 - +
+- '-'
 keys_for_time_interval:
 - '2'
 - '3'
@@ -29,6 +30,7 @@ keys_that_already_have_hotkeys:
   Trend Line: '0'
 log_level: info
 numpad_keys_scancode:
+- 14
 - 28
 - 53
 - 55
@@ -48,7 +50,8 @@ numpad_keys_scancode:
 open_tradingview_key: enter
 quick_search_button: Ctrl+K
 size_of_square: 100
-square_hotkey: '1'
+square_hotkey: '-'
 time_interval_button: ','
 wait_value: 0.5
-license_key: '''
+license_key: ''
+backspace_remove_drawing_key: 'backspace'

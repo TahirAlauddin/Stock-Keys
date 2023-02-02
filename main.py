@@ -13,11 +13,12 @@ import requests
 import ctypes
 
 
-myappid = 'tahiralauddin.tradingviewhotkeysapp.1.1' # arbitrary string
+myappid = 'tahiralauddin.tradingviewhotkeysapp.1.6' # arbitrary string
 ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
 
 load_dotenv()
 
+VALIDATED_LICENSE_KEY_MESSAGE = "You're license Key is validated! You can use this software."
 
 class MainWindow(QMainWindow):
     """
@@ -35,7 +36,7 @@ class MainWindow(QMainWindow):
         self.keys_bg_process = None
 
         # APP NAME
-        title = "TradingView HotKeys Desktop App"
+        title = "Stock Keys"
         description = "An App that listens to hotkeys and does corresponding task in TradingView App."
         # APPLY TEXTS
         self.setWindowTitle(title)
@@ -60,6 +61,10 @@ class MainWindow(QMainWindow):
         self.ui.updateButton.clicked.connect(self.update_settings)
         self.ui.resetButton.clicked.connect(self.reset_settings)
 
+        if self.get_license_key_from_config():
+            self.ui.licenseInput.setEnabled(False)
+            self.ui.statusLabel.setText(VALIDATED_LICENSE_KEY_MESSAGE)
+
         # Call other functions for initialization
         self.populate_settings_input_boxes()
         self.initialize_dynamodb()
@@ -71,13 +76,13 @@ class MainWindow(QMainWindow):
         Returns True if it is connected, otherwise returns False
         """
         try:
-            requests.get('http://google.com')
+            requests.get('https://google.com')
             return True
         except requests.exceptions.ConnectionError:
             return False
 
-    def get_license_key_from_config(self):
-        """If the license key is already validated for this machine"""
+    def get_license_key_from_config(self) -> bool:
+        """If the license key is already validated for this machine, return True"""
         with open('config.yml') as config_file:
             config = yaml.safe_load(config_file)
 
@@ -85,7 +90,7 @@ class MainWindow(QMainWindow):
             return True
 
     def set_license_key_in_config(self, license_key):
-        """If the license key is already validated for this machine"""
+        """Set the license key in config.yml file for future use"""
         with open('config.yml') as config_file:
             config = yaml.safe_load(config_file)
 
@@ -96,14 +101,15 @@ class MainWindow(QMainWindow):
 
 
     def hide_gui(self):
-        """Stop the hotkeys listener process from the background"""
+        """Hide the Interface of the application. App runs in background completely"""
         self.hide()
 
 
     def stop(self):
         """Stop the hotkeys listener process from the background"""
-        self.keys_bg_process.stop()
-        self.ui.statusLabel.setText("The background process stopped!")
+        if self.keys_bg_process:
+            self.keys_bg_process.terminate()
+            self.ui.statusLabel.setText("The background process stopped!")
 
 
     def login(self):
@@ -141,6 +147,11 @@ class MainWindow(QMainWindow):
 
 
     def get_machine_id(self):
+        """
+        This function retrieves the unique machine identifier of the computer where the code is executed.
+        If the function is unable to retrieve the identifying number, it raises an exception with the message 
+        "Couldn't get the Unique ID of this Machine!".
+        """
         c = wmi.WMI()
         for item in c.Win32_ComputerSystemProduct():
             return item.IdentifyingNumber
@@ -224,6 +235,7 @@ class MainWindow(QMainWindow):
         # Invalid License Key
         return False
 
+
     def list_license_keys(self) -> dict:
         """
         Returns a list of all license keys present in the DynamoDB table.
@@ -306,7 +318,6 @@ class MainWindow(QMainWindow):
         with open('config.yml', 'w') as config_file:
             yaml.dump(config, config_file)
 
-
     
     def reset_settings(self):
         """
@@ -320,6 +331,16 @@ class MainWindow(QMainWindow):
             settings_file.write(backup_config)
 
         self.populate_settings_input_boxes()
+
+
+
+# To add a loading window with animation to a PyInstaller-converted executable, you need to make changes to your original Python code before converting it to an executable. Here's a basic outline of the steps involved:
+# Create a new Python script that will act as the loading window. This script should have a GUI created using a library such as tkinter, PyQt, or wxPython.
+# In the loading window script, add the desired animation or any other information that you want to show while the main application is loading.
+# In your main application script, add code that will launch the loading window as soon as the script is executed. You can use the subprocess module in Python to run the loading window script as a separate process.
+# After the loading window is launched, the main application can continue to load and do its work in the background. When the main application is ready, you can close the loading window.
+# Finally, convert the main application and the loading window script to an executable using PyInstaller.
+# Note: The exact details of how to implement the loading window may vary depending on the GUI library you choose and the specifics of your application. But this outline should give you an idea of the steps involved in adding a loading window to a PyInstaller-converted executable.
 
 
 if __name__ == "__main__":
