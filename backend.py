@@ -200,8 +200,6 @@ class TradingViewHotKeys:
         elif key_char in KEYS_FOR_TIME_INTERVAL:
             # Key corresponds to changing Time Interval, Use ',' key to achieve this task
             self.select_time_interval(key_char)
-        elif key_char in KEYS_FOR_PIXEL_LOCATION:
-            self.locate_pixels_on_screen(key_char)
 
         elif key_char == BACKSPACE_REMOVE_DRAWING_KEY:
             self.remove_drawings(key_char)
@@ -306,7 +304,6 @@ class TradingViewHotKeys:
     def bring_to_front(self, process_name):
         for proc in psutil.process_iter():
             if process_name in proc.name().lower():
-                print(proc.pid)
                 hwnd = self.find_window_for_pid(proc.pid)
                 if hwnd:
                     ctypes.windll.user32.SetForegroundWindow(hwnd)
@@ -349,7 +346,6 @@ class TradingViewHotKeys:
         Start the keyboard event listener that handles incoming keys
         when a key is pressed. Outsource the task to other thread using queue
         """
-        print("RUN")
         keyboard.on_release(self.handle_incoming_keys)
 
         # Do other stuff here
@@ -359,7 +355,6 @@ class TradingViewHotKeys:
                 self.handle_hotkey(key)
                 
             if terminate == True:
-                print("Exiting")
                 break      
 
 

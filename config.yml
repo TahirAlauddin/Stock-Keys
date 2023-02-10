@@ -8,7 +8,7 @@ debug: true
 hotkeys_mapping_method2:
   '*': Alt+f
   '-': Ctrl+Alt+h
-  .: Alt+h
+  .: Alt+j
   '0': Alt+t
 keys_for_quick_search:
 - '1'

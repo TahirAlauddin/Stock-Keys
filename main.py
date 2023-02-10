@@ -290,33 +290,37 @@ class MainWindow(QMainWindow):
         """
         Update the settings in the config.yml file based on the user input in the UI.
         """
-        with open('config.yml') as config_file:
-            config = yaml.safe_load(config_file)
+        try:
+            with open('config.yml') as config_file:
+                config = yaml.safe_load(config_file)
 
-        square_size = self.ui.sizeOfSquareSpinBox.value()
-        wait_value = self.ui.waitValueSpinBox.value()
-        app_name = self.ui.appNameInput.text()
-        app_shortcut_link_path = self.ui.appShortcutLink.text()
-        trend_line_hotkey = self.ui.trendLineHotKeyInput.text()
-        horizontal_line_hotkey = self.ui.horizontalLineHotKeyInput.text()
-        hide_drawings_hotkey = self.ui.hideDrawingsHotKeyInput.text()
-        fib_hotkey = self.ui.fibHotKeyInput.text()
-        
-        # Updating Configurations settings
-        config['size_of_square'] = int(square_size)        
-        config['app_name'] = app_name
-        config['wait_value'] = wait_value / 10
-        config['app_shortcut_link'] = app_shortcut_link_path        
-        config['hotkeys_mapping_method2']['0'] = trend_line_hotkey
-        config['hotkeys_mapping_method2']['.'] = horizontal_line_hotkey
-        config['hotkeys_mapping_method2']['-'] = hide_drawings_hotkey
-        config['hotkeys_mapping_method2']['*'] = fib_hotkey
+            square_size = self.ui.sizeOfSquareSpinBox.value()
+            wait_value = self.ui.waitValueSpinBox.value()
+            app_name = self.ui.appNameInput.text()
+            app_shortcut_link_path = self.ui.appShortcutLink.text()
+            trend_line_hotkey = self.ui.trendLineHotKeyInput.text()
+            horizontal_line_hotkey = self.ui.horizontalLineHotKeyInput.text()
+            hide_drawings_hotkey = self.ui.hideDrawingsHotKeyInput.text()
+            fib_hotkey = self.ui.fibHotKeyInput.text()
+            
+            # Updating Configurations settings
+            config['size_of_square'] = int(square_size)        
+            config['app_name'] = app_name
+            config['wait_value'] = wait_value / 10
+            config['app_shortcut_link'] = app_shortcut_link_path        
+            config['hotkeys_mapping_method2']['0'] = trend_line_hotkey
+            config['hotkeys_mapping_method2']['.'] = horizontal_line_hotkey
+            config['hotkeys_mapping_method2']['-'] = hide_drawings_hotkey
+            config['hotkeys_mapping_method2']['*'] = fib_hotkey
 
-         #? Can keep adding more settings
+            #? Can keep adding more settings
 
-        # Finally write the settings to config.yml
-        with open('config.yml', 'w') as config_file:
-            yaml.dump(config, config_file)
+            # Finally write the settings to config.yml
+            with open('config.yml', 'w') as config_file:
+                yaml.dump(config, config_file)
+        except Exception as e:
+            with open('error.log', 'w') as file:
+                file.write(e)
 
     
     def reset_settings(self):
@@ -331,7 +335,6 @@ class MainWindow(QMainWindow):
             settings_file.write(backup_config)
 
         self.populate_settings_input_boxes()
-
 
 
 # To add a loading window with animation to a PyInstaller-converted executable, you need to make changes to your original Python code before converting it to an executable. Here's a basic outline of the steps involved:
